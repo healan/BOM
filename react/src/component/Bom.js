@@ -18,17 +18,17 @@ const mdTheme = createTheme();
 var rows = [];
 var columns = [];
 
-export default function Main(){
+export default function Bom(){
 
     const [poductModal, setPoductModal] = useRecoilState(productmodalState);
 
     columns = [
-        { field: 'file_option', headerName: '생성일자', width: 200, editable: false },
-        { field: 'filename', headerName: '생산계획대상', width: 200, editable: false },
-        { field: 'file_version', headerName: '생산계획기간', width: 200, editable: false },
-        { field: 'filesize', headerName: '생성', width: 200, editable: false },
-        { field: 'comment', headerName: '적요', width: 200, editable: false },
-        { field: 'history', headerName: '이력', width: 200, editable: false }, 
+        { field: 'file_option', headerName: '품목코드', width: 200, editable: false },
+        { field: 'filename', headerName: '품목명', width: 200, editable: false },
+        { field: 'file_version', headerName: '생산공정', width: 200, editable: false },
+        { field: 'filesize', headerName: '원재료갯수', width: 200, editable: false },
+        { field: 'comment', headerName: 'BOM 등록', width: 200, editable: false },
+        { field: 'history', headerName: '조회', width: 200, editable: false }, 
       ];
 
     return (  
@@ -58,7 +58,7 @@ export default function Main(){
                     <Grid item xs={12}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                         <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                            생산요청등록
+                            BOM 조회
                         </Typography>   
                         <DataGrid
                             rows={rows}

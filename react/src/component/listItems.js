@@ -16,15 +16,36 @@ export const MainListItems= (
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="제품군" />
+      <ListItemText primary="생산요청등록" />
     </ListItemButton>
    
+    <ListItemButton href="/bom">
+      <ListItemIcon>
+        <CloudIcon />
+      </ListItemIcon>
+      <ListItemText primary="BOM 조회" />
+    </ListItemButton> 
+
     <ListItemButton >
       <ListItemIcon>
         <CloudIcon />
       </ListItemIcon>
-      <ListItemText primary="클라우드" />
-    </ListItemButton> 
+      <ListItemText primary="작업지시등록" />
+    </ListItemButton>
+
+    <ListItemButton >
+      <ListItemIcon>
+        <CloudIcon />
+      </ListItemIcon>
+      <ListItemText primary="작업지시현황" />
+    </ListItemButton>
+
+    <ListItemButton >
+      <ListItemIcon>
+        <CloudIcon />
+      </ListItemIcon>
+      <ListItemText primary="마이페이지" />
+    </ListItemButton>
   </React.Fragment>
  
  );

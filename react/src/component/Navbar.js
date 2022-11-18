@@ -111,21 +111,9 @@ export default function NavBarContent() {
           color="inherit"
           noWrap
           sx={{ flexGrow: 1 }}
-          
         >
-          InnoEye Community
+          기업 사무용품 판매 ERP 시스템
       </Typography>
-      <IconButton color="inherit" sx={{mr:2}} >
-        <Badge color="secondary">
-            <Typography>서비스가입</Typography>
-        </Badge>
-      </IconButton>
-      <IconButton color="inherit" >
-            <Badge color="secondary" >
-                {/* <Typography>로그인</Typography> */}
-                <LoginIcon />
-            </Badge>
-        </IconButton>
     </Toolbar>
   </AppBar>
   <Drawer variant="permanent" open={open}>
