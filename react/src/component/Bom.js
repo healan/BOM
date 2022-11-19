@@ -15,20 +15,38 @@ import { productmodalState } from './state.js';
 import ProductModal from './productModal.js';
 
 const mdTheme = createTheme();
-var rows = [];
+var rows = [{
+    itemcode: 'A0071'
+    , itemname: '메모지'
+    , process: '기초공정'
+    , matCnt: '120'
+    , bomAdd: 'bom'
+    , bomSrch: 'bom'
+    }];
 var columns = [];
 
 export default function Bom(){
 
     const [poductModal, setPoductModal] = useRecoilState(productmodalState);
-
+ 
     columns = [
-        { field: 'file_option', headerName: '품목코드', width: 200, editable: false },
-        { field: 'filename', headerName: '품목명', width: 200, editable: false },
-        { field: 'file_version', headerName: '생산공정', width: 200, editable: false },
-        { field: 'filesize', headerName: '원재료갯수', width: 200, editable: false },
-        { field: 'comment', headerName: 'BOM 등록', width: 200, editable: false },
-        { field: 'history', headerName: '조회', width: 200, editable: false }, 
+        { field: 'itemcode', headerName: '품목코드', width: 200, editable: false },
+        { field: 'itemname', headerName: '품목명', width: 200, editable: false },
+        { field: 'process', headerName: '생산공정', width: 200, editable: false },
+        { field: 'matCnt', headerName: '원재료갯수', width: 150, editable: false },
+        { field: 'bomAdd', headerName: 'BOM 등록', width: 150, editable: false,
+            renderCell: (v) => { 
+                return (<Button variant="outlined" size='small' 
+                            sx={{minWidth:100, maxWidth:100}}
+                            onClick={setPoductModal(true)}
+                        >
+                            BOM 등록
+                        </Button>); 
+            }
+        },
+        { field: 'bomSrch', headerName: '조회', width: 150, editable: false,
+            renderCell: (v) => { return (<Button variant="outlined" size='small' sx={{minWidth:100, maxWidth:100}}>BOM 조회</Button>); }
+        }, 
       ];
 
     return (  
@@ -63,15 +81,13 @@ export default function Bom(){
                         <DataGrid
                             rows={rows}
                             columns={columns}
-                            getRowId={(row) => row.file_id}
+                            getRowId={(row) => row.itemcode}
                             autoHeight={true}
-                            checkboxSelection
+           
                             disableSelectionOnClick
-                            onSelectionModelChange={(ids) => {
-                                
-                            }}
+      
                         />
-                        <Button variant="contained" size='small' sx={{minWidth:90, maxWidth:90, mt:2}} onClick={()=>{setPoductModal(true)}}>신규</Button>
+                        <Button variant="contained" size='small' sx={{minWidth:90, maxWidth:90, mt:2}}>품목등록</Button>
                         </Paper>
                     </Grid>
                 </Grid>

@@ -13,23 +13,59 @@ import Typography from '@mui/material/Typography';
 import { useRecoilState } from 'recoil';
 import { productmodalState } from './state.js';
 import ProductModal from './productModal.js';
+import moment from 'moment';
+import URL from '../config.js';
+import axios from 'axios';
 
 const mdTheme = createTheme();
-var rows = [];
-var columns = [];
 
 export default function Main(){
-
+    const [rows, setRows] = useState([]);
     const [poductModal, setPoductModal] = useRecoilState(productmodalState);
+    const [prodId, setProdId] = useState();
 
-    columns = [
-        { field: 'file_option', headerName: '생성일자', width: 200, editable: false },
-        { field: 'filename', headerName: '생산계획대상', width: 200, editable: false },
-        { field: 'file_version', headerName: '생산계획기간', width: 200, editable: false },
-        { field: 'filesize', headerName: '생성', width: 200, editable: false },
-        { field: 'comment', headerName: '적요', width: 200, editable: false },
-        { field: 'history', headerName: '이력', width: 200, editable: false }, 
+    const columns = [
+        { field: 'createDate', headerName: '생성일자', width: 150, editable: false,
+             valueFormatter: params => moment(params.value).format("YYYY-MM-DD"),
+         },
+        { field: 'subject', headerName: '생산계획대상', width: 150, editable: false,
+            valueFormatter: params => params.value =='1'?'주문서':'',},
+        { field: 'planStartDate', headerName: '생산계획시작', width: 120, editable: false,
+             valueFormatter: params => moment(params.value).format("YYYY-MM-DD"), },
+        { field: 'planEndDate',headerName: '생산계획종료', width: 120, editable: false,
+             valueFormatter: params => moment(params.value).format("YYYY-MM-DD"), },
+        { field: 'add', headerName: '생성', width: 100, editable: false },
+        { field: 'comment', headerName: '적요', width: 300, editable: false },
+        { field: 'history', headerName: '이력', width: 100, editable: false }, 
       ];
+
+    useEffect(() => {
+        loadData();
+    },[]);
+
+    useEffect(() => {
+        loadData();
+    },[poductModal]);
+
+    const loadData = async() => {
+        await axios.get(URL+'/api/srchProduct/')
+                   .then((res) => {
+                       console.log(29, res.data);
+                       setRows(res.data.rows);
+                   });
+    };
+    
+    const handelDelProd = async() => {
+        let cf = window.confirm('전체 데이터가 삭제됩니다. 계속 하시겠습니까?');
+        if(cf == true){
+            await axios.delete(URL+'/api/delProduct/'+prodId)
+                .then((res) => {
+                    loadData();
+                });
+        }else{
+            loadData();
+        }
+    };
 
     return (  
         <>
@@ -57,23 +93,33 @@ export default function Main(){
                     </Grid>
                     <Grid item xs={12}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                        <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                            생산요청등록
-                        </Typography>   
-                        <DataGrid
-                            rows={rows}
-                            columns={columns}
-                            getRowId={(row) => row.file_id}
-                            autoHeight={true}
-                            checkboxSelection
-                            disableSelectionOnClick
-                            onSelectionModelChange={(ids) => {
-                                
-                            }}
-                        />
-                        <Button variant="contained" size='small' sx={{minWidth:90, maxWidth:90, mt:2}} onClick={()=>{setPoductModal(true)}}>신규</Button>
-                        </Paper>
+                            <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                                생산요청등록
+                            </Typography>   
+                            <DataGrid
+                                rows={rows}
+                                columns={columns}
+                                getRowId={(row) => row.productId}
+                                autoHeight={true}
+                                checkboxSelection
+                                disableSelectionOnClick
+                                selectionModel={prodId}
+                                onSelectionModelChange={(e) => {
+                                    if(e.length > 1){
+                                        e = e[e.length - 1];
+                                        setProdId(e);
+                                    }else{ 
+                                        setProdId(e);
+                                    };
+                                }}
+                            />
+                            <Grid item xs={2.2}>
+                                <Button variant="contained" size='small' sx={{minWidth:90, maxWidth:90, mt:2}} onClick={()=>{setPoductModal(true)}}>신규</Button>
+                                <Button variant="contained" size='small' sx={{minWidth:90, maxWidth:90, mt:2, ml:1}} onClick={handelDelProd}>삭제</Button>
+                            </Grid>
+                       </Paper>
                     </Grid>
+                   
                 </Grid>
              </Container>    
              <ProductModal />

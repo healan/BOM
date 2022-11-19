@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled, createTheme } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,14 +7,11 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { useNavigate } from 'react-router-dom';
 import { MainListItems, secondaryListItems  } from './listItems.js';
 import { makeStyles, Dialog } from '@material-ui/core';
-import LoginIcon from '@mui/icons-material/Login';
-// import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 const drawerWidth = 260;
 const useStyles = makeStyles({
@@ -78,15 +75,9 @@ export default function NavBarContent() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  //Recoil
-//   const modalOpen = useRecoilValue(modalState);
-//   const setModalOpen = useSetRecoilState(modalState);
-//   const setModalMenu = useSetRecoilState(modalMenuState);
-//   const [myinfoOpen, setmyinfoOpen] = useRecoilState(modalMyinfoState);
  
   return (
   <>
-
     <AppBar position="absolute" open={open}>
     <Toolbar
       sx={{
