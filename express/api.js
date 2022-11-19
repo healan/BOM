@@ -66,3 +66,34 @@ export function delProduct(req, res){
                 res.send(200);
         });
 };
+
+export function srchBom(req, res){
+    let sql = 'select itemCode , itemName , stockCnt , requireCnt , remark from bom;';
+    connection.query(sql,
+        (err, rows, fields) => {
+            if(err)
+                res.send(err);
+            else
+                res.send({
+                    rows
+                });
+        });
+};
+
+export function addBom(req, res){
+    let sql = 'insert into bom (itemCode, itemName, stockCnt, requireCnt, remark) values (?,?,?,?,?);';
+    let itemCode = req.body.itemcode;
+    let itemName = req.body.itemName;
+    let stockCnt = req.body.stockCnt;
+    let requireCnt = req.body.reqCnt;
+    let remark = req.body.comment;
+    let params = [itemCode, itemName, stockCnt, requireCnt, remark];
+    connection.query(sql, params,
+        (err, rows, fields) => {
+            if(err)
+                res.send(err);
+            else    
+                res.send(200);
+        });
+
+};

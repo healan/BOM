@@ -1,114 +1,96 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import Grid from '@mui/material/Grid';
-import {DataGrid} from '@mui/x-data-grid';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Autocomplete from '@mui/material/Autocomplete';
-import dayjs from "dayjs";
 import { useRecoilState } from 'recoil';
-import { productmodalState } from './state.js';
-import Checkbox from '@mui/material/Checkbox';
+import { bomModalState } from './state.js';
+import URL from '../config.js';
+import axios from 'axios';
 
-export default function bomModal(){
-    const [poductModal, setPoductModal] = useRecoilState(productmodalState);
-    const [startDt, setStartDt] = useState();
-    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+export default function BomModal(){
+    const [bomModal, setbomModal] = useRecoilState(bomModalState);
+    const [itemcode, setItemcode] = useState();
+    const [stockCnt, setstockCnt] = useState();
+    const [reqCnt, setReqCnt] = useState();
     const [comment, setComment] = useState();
+    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+    
+    const handleBomSave = async() => {
+        let data = {
+            itemcode : itemcode,
+            stockCnt : stockCnt,
+            reqCnt  : reqCnt,
+            comment : comment,
+        };
+
+        await axios.post(URL+'/api/addBom/', data)
+                .then((res) => {
+                    if(res.status == 200){
+                        alert('정상적으로 생성되었습니다.');
+                        setbomModal(false);
+                    };
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+    };
 
     return(
-        <Dialog open={poductModal}>
+        <Dialog 
+            open={bomModal}
+            fullWidth
+        >
         <DialogTitle id="responsive-dialog-title" align='center' sx={{mt:2}}>
-            {"생산 계획 생성"}
+            {"BOM 생산"}
         </DialogTitle>
         <DialogContent>
             <Grid container sx={{mt:1}}>
                 <Grid item xs={3} sx={{mt:1}}>
-                    <Typography variant="button" gutterBottom>생성일자 </Typography>
+                    <Typography variant="button" gutterBottom>품목코드 </Typography>
                 </Grid>
                 <Grid item xs={9}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                            label=""
-                            inputFormat={'YYYY-MM-DD'}
-                            value={startDt}
-                            onChange={(newValue) => {
-                                setStartDt(dayjs(newValue).format('YYYY-MM-DD'));
-                            }}
-                            renderInput={(params) => <TextField fullWidth size="small" sx={{minWidth:400}} {...params} />}
-                        />
-                    </LocalizationProvider>
+                    <TextField fullWidth id="outlined-basic" variant="outlined" sx={{minWidth:300}} value={itemcode} onChange={(e)=> setItemcode(e.target.value)}/>
                 </Grid>
             </Grid>
 
             <Grid container sx={{mt:1}}>
                 <Grid item sx={{mt:1}} xs={3}>
-                    <Typography  variant="button" gutterBottom>생성계획대상 </Typography>
+                    <Typography  variant="button" gutterBottom>재고수량 </Typography>
                 </Grid>
                 <Grid item xs={9}>
-                    <Typography variant="button" gutterBottom>주문서 <Checkbox {...label} sx={{ '& .MuiSvgIcon-root': { fontSize: 25 } }}/></Typography>
+                    <TextField fullWidth id="outlined-basic" variant="outlined" sx={{minWidth:300}} value={stockCnt} onChange={(e)=> setstockCnt(e.target.value)}/>
                 </Grid>
             </Grid>
 
             <Grid container sx={{mt:1}}>
                 <Grid item sx={{mt:1}} xs={3}>
-                    <Typography variant="button" gutterBottom>생산계획기간 </Typography>
+                    <Typography variant="button" gutterBottom>소요량 </Typography>
                 </Grid>
-                <Grid item xs={4}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                                label=""
-                                inputFormat={'YYYY-MM-DD'}
-                                value={startDt}
-                                onChange={(newValue) => {
-                                    setStartDt(dayjs(newValue).format('YYYY-MM-DD'));
-                                }}
-                                renderInput={(params) => <TextField fullWidth size="small" sx={{minWidth:150}} {...params} />}
-                            />
-                    </LocalizationProvider>
-                </Grid>
-                <Grid item xs={1} sx={{mt:0.5}}>
-                    <Typography >&nbsp; &nbsp; ~</Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                                label=""
-                                inputFormat={'YYYY-MM-DD'}
-                                value={startDt}
-                                onChange={(newValue) => {
-                                    setStartDt(dayjs(newValue).format('YYYY-MM-DD'));
-                                }}
-                                renderInput={(params) => <TextField fullWidth size="small" sx={{minWidth:150}} {...params} />}
-                            />
-                    </LocalizationProvider>
+                <Grid item xs={9}>
+                    <TextField fullWidth id="outlined-basic" variant="outlined" sx={{minWidth:300}} value={reqCnt} onChange={(e)=> setReqCnt(e.target.value)}/>
                 </Grid>
             </Grid>
 
             <Grid container sx={{mt:1}}>
                 <Grid item sx={{mt:2}} xs={3}>
-                    <Typography variant="button" gutterBottom>적요 </Typography>
+                    <Typography variant="button" gutterBottom>비고 </Typography>
                 </Grid>
                 <Grid item xs={9} sx={{mt:2}}>
-                    <TextField fullWidth id="outlined-basic" variant="outlined" multiline rows={5} sx={{minWidth:400}} value={comment} onChange={(e)=> setComment(e.target.value)}/>
+                    <TextField fullWidth id="outlined-basic" variant="outlined" sx={{minWidth:300}} value={comment} onChange={(e)=> setComment(e.target.value)}/>
                 </Grid>
             </Grid>
         </DialogContent>
 
         <DialogActions>
-            <Button variant="outlined" autoFocus  sx={{mb:2}} onClick={() => setPoductModal(false)}>
+            <Button variant="outlined" autoFocus  sx={{mb:2}} onClick={() => setbomModal(false)}>
                 닫기
             </Button>
-            <Button variant="outlined" autoFocus sx={{mb:2}}>
+            <Button variant="outlined" autoFocus sx={{mb:2}} onClick={handleBomSave}>
                 저장
             </Button>
         </DialogActions>

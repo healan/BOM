@@ -11,8 +11,9 @@ import { DataGrid} from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useRecoilState } from 'recoil';
-import { productmodalState } from './state.js';
-import ProductModal from './productModal.js';
+import { bomModalState, bomListModalState } from './state.js';
+import BomModal from './bomModal';
+import BomListModal from './bomListModal.js';
 
 const mdTheme = createTheme();
 var rows = [{
@@ -27,8 +28,9 @@ var columns = [];
 
 export default function Bom(){
 
-    const [poductModal, setPoductModal] = useRecoilState(productmodalState);
- 
+    const [bomModal, setbomModal] = useRecoilState(bomModalState);
+    const [bomListModal, setbomListModal] = useRecoilState(bomListModalState);
+
     columns = [
         { field: 'itemcode', headerName: '품목코드', width: 200, editable: false },
         { field: 'itemname', headerName: '품목명', width: 200, editable: false },
@@ -38,14 +40,21 @@ export default function Bom(){
             renderCell: (v) => { 
                 return (<Button variant="outlined" size='small' 
                             sx={{minWidth:100, maxWidth:100}}
-                            onClick={setPoductModal(true)}
+                            onClick={(e) => {setbomModal(true)}}
                         >
                             BOM 등록
                         </Button>); 
             }
         },
         { field: 'bomSrch', headerName: '조회', width: 150, editable: false,
-            renderCell: (v) => { return (<Button variant="outlined" size='small' sx={{minWidth:100, maxWidth:100}}>BOM 조회</Button>); }
+            renderCell: (v) => { 
+              return (<Button variant="outlined" size='small' 
+                          sx={{minWidth:100, maxWidth:100}}
+                          onClick={(e) => {setbomListModal(true)}}
+                          >
+                            BOM 조회
+                          </Button>); 
+            }
         }, 
       ];
 
@@ -91,8 +100,11 @@ export default function Bom(){
                         </Paper>
                     </Grid>
                 </Grid>
-             </Container>    
-             <ProductModal />
+             </Container>  
+
+              <BomModal />
+              <BomListModal />
+              
             </Box>
           </Box>
         </ThemeProvider>

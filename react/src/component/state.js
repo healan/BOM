@@ -8,9 +8,16 @@ export const productmodalState = atom({
 
 });
 
-export const modalMenuState = atom({
+export const bomModalState = atom({
 
-    key: 'modalMenuState',
+    key: 'bomModalState',
+    default: false, 
+
+});
+
+export const bomListModalState = atom({
+
+    key: 'bomListModalState',
     default: false, 
 
 });
