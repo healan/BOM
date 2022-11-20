@@ -32,7 +32,6 @@ export default function BomListModal(){
     const loadData = async() => {
         await axios.get(URL+'/api/srchBom/')
                 .then((res) => {
-                    console.log(37, res.data);
                     setRows(res.data.rows);
                 });
     };
@@ -42,41 +41,72 @@ export default function BomListModal(){
             open={bomListModal}
             fullWidth
         >
-        <DialogTitle id="responsive-dialog-title" align='center' sx={{mt:2}}>
-            {"BOM 조회"}
-        </DialogTitle>
-        <DialogContent>
-            <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            <DialogTitle id="responsive-dialog-title" align='center' sx={{mt:2}}>
+                {"BOM 조회"}
+            </DialogTitle>
+            <DialogContent >
+                <Paper sx={{mb:4, p:1}} variant='outlined'>
+                    <Grid container >
+                        <Grid item xs={3}>
+                            <Typography>생산품목 :</Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Typography>C422 메모지</Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Typography>생산공정 :</Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Typography>기초공정</Typography>
+                        </Grid>
+                    </Grid>
+                    <Grid container>
+                        <Grid item xs={3}>
+                            <Typography>생산수량 :</Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Typography>1000</Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Typography></Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Typography></Typography>
+                        </Grid>
+                    </Grid>
+                </Paper>
+
+                <Grid container sx={{mb:1}}>
+                    <Grid item xs={2} sx={{mt:1}}>
+                        <Typography>생산량</Typography>
+                    </Grid>
+                    <Grid item xs={7}>
+                        <TextField id="outlined-basic" size='small' fullWidth variant="outlined" value='1000' />
+                    </Grid>
+                    <Grid item xs={2} sx={{ml:1}}>
+                        <Button fullWidth variant="contained">적용</Button>
+                    </Grid>
+                </Grid>
+                
+                <Grid item xs={12}>
                     <DataGrid
                         rows={rows}
                         columns={columns}
                         getRowId={(row) => row.itemCode}
                         autoHeight={true}
-                        // checkboxSelection
-                        // disableSelectionOnClick
-                        // selectionModel={prodId}
-                        // onSelectionModelChange={(e) => {
-                        //     if(e.length > 1){
-                        //         e = e[e.length - 1];
-                        //         setProdId(e);
-                        //     }else{ 
-                        //         setProdId(e);
-                        //     };
-                        // }}
                     />
-                </Paper>
-            </Grid>
-        </DialogContent>
+                </Grid>
+                
+            </DialogContent>
 
-        <DialogActions>
-            <Button variant="outlined" autoFocus  sx={{mb:2}} onClick={() => setbomListModal(false)}>
-                닫기
-            </Button>
-            <Button variant="outlined" autoFocus sx={{mb:2}} >
-                수정
-            </Button>
-        </DialogActions>
+            <DialogActions>
+                <Button variant="outlined" autoFocus  sx={{mb:2}} onClick={() => setbomListModal(false)}>
+                    닫기
+                </Button>
+                <Button variant="outlined" autoFocus sx={{mb:2}} >
+                    수정
+                </Button>
+            </DialogActions>
         </Dialog>
     )
 };

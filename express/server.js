@@ -1,20 +1,15 @@
 import express from 'express';
 import cors from 'cors';
-import multer from 'multer';
-import iconv from 'iconv-lite';
-import fs from 'fs';
-
-var app = express();
 import pkg from 'body-parser';
+import { srchProduct, addProduct, delProduct, srchBom, addBom } from './api.js';
+
 const { json, urlencoded } = pkg;
 const port = process.env.port || 9998;
+var app = express();
 
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cors({origin: '*'})); 
-
-import { srchProduct, addProduct, delProduct, srchBom, addBom } from './api.js';
-
 
 app.get('/api/srchProduct/', srchProduct);
 app.post('/api/addProduct/', addProduct);

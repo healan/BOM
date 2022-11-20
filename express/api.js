@@ -3,8 +3,6 @@ import 'date-utils';
 const data = fs.readFileSync('./db.json');
 const conf = JSON.parse(data);
 import { createConnection } from 'mysql';
-import mysql from 'mysql';
-import iconv from 'iconv-lite';
 
 const connection = createConnection({
     host: conf.host,
@@ -22,11 +20,10 @@ connection.on('error', function(err) {
     }
 });
 
-
 export function srchProduct(req, res){
     let sql = 'select productId ,createDate, subject, planStartDate, planEndDate, comment from production;';
     connection.query(sql,
-        (err, rows, fields) => {
+        (err, rows) => {
             if(err)
                 res.send(err);
             else
@@ -45,7 +42,7 @@ export function addProduct(req, res){
     let comment = req.body.comment;
     let params = [createDate, subject, planStartDate, planEndDate, comment];
     connection.query(sql, params,
-        (err, rows, fields) => {
+        (err) => {
             if(err)
                 res.send(err);
             else    
@@ -59,7 +56,7 @@ export function delProduct(req, res){
     let projId = req.params.id;
     let params = [projId];
     connection.query(sql, params,
-        (err, rows, fields) => {
+        (err) => {
             if(err)
                 res.send(err);
             else
@@ -70,7 +67,7 @@ export function delProduct(req, res){
 export function srchBom(req, res){
     let sql = 'select itemCode , itemName , stockCnt , requireCnt , remark from bom;';
     connection.query(sql,
-        (err, rows, fields) => {
+        (err, rows) => {
             if(err)
                 res.send(err);
             else
@@ -89,7 +86,7 @@ export function addBom(req, res){
     let remark = req.body.comment;
     let params = [itemCode, itemName, stockCnt, requireCnt, remark];
     connection.query(sql, params,
-        (err, rows, fields) => {
+        (err) => {
             if(err)
                 res.send(err);
             else    
