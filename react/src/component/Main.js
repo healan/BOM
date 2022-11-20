@@ -87,9 +87,6 @@ export default function Main(){
               <Toolbar />
               <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Grid container spacing={5}>
-                    <Grid item>
-
-                    </Grid>
                     <Grid item xs={12}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                             <Typography component="h2" variant="h6" color="primary" gutterBottom>
@@ -112,13 +109,15 @@ export default function Main(){
                                     };
                                 }}
                             />
-                            <Grid item xs={2.2}>
-                                <Button variant="contained" size='small' sx={{minWidth:90, maxWidth:90, mt:2}} onClick={()=>{setPoductModal(true)}}>신규</Button>
-                                <Button variant="contained" size='small' sx={{minWidth:90, maxWidth:90, mt:2, ml:1}} onClick={handelDelProd}>삭제</Button>
-                            </Grid>
+                           
                        </Paper>
+                    </Grid> 
+                </Grid>
+                <Grid container alignItems='flex-start'>
+                    <Grid item>
+                        <Button variant="contained" size='small' sx={{minWidth:90, maxWidth:90, mt:2}} onClick={()=>{setPoductModal(true)}}>신규</Button>
+                        <Button variant="contained" size='small' sx={{minWidth:90, maxWidth:90, mt:2, ml:1}} onClick={handelDelProd}>삭제</Button>
                     </Grid>
-                   
                 </Grid>
              </Container>    
              <ProductModal />

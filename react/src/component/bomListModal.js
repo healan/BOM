@@ -10,12 +10,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { useRecoilState } from 'recoil';
-import { bomListModalState } from './state.js';
+import { bomListModalState, bomModalState } from './state.js';
 import URL from '../config.js';
 import axios from 'axios';
 
 export default function BomListModal(){
     const [bomListModal, setbomListModal] = useRecoilState(bomListModalState);
+    const bomModal = useRecoilState(bomModalState);
     const [rows, setRows] = useState([]);
     
     const columns = [
@@ -28,6 +29,10 @@ export default function BomListModal(){
     useEffect(() => {
         loadData();
     },[]);
+
+    useEffect(() => {
+        loadData();
+    },[bomModal]);
 
     const loadData = async() => {
         await axios.get(URL+'/api/srchBom/')
@@ -94,6 +99,8 @@ export default function BomListModal(){
                         columns={columns}
                         getRowId={(row) => row.itemCode}
                         autoHeight={true}
+                        rowsPerPageOptions={[5, 10]}
+                        disableSelectionOnClick={true}
                     />
                 </Grid>
                 

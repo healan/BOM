@@ -32,6 +32,7 @@ export default function BomModal(){
                 .then((res) => {
                     if(res.status == 200){
                         alert('정상적으로 생성되었습니다.');
+                        
                         setbomModal(false);
                     };
                 })

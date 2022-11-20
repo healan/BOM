@@ -92,9 +92,7 @@ export default function Bom(){
                             columns={columns}
                             getRowId={(row) => row.itemcode}
                             autoHeight={true}
-           
-                            disableSelectionOnClick
-      
+                            disableSelectionOnClick={true}
                         />
                         <Button variant="contained" size='small' sx={{minWidth:90, maxWidth:90, mt:2}}>품목등록</Button>
                         </Paper>
