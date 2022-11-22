@@ -37,6 +37,12 @@ export default function BomListModal(){
     const loadData = async() => {
         await axios.get(URL+'/api/srchBom/')
                 .then((res) => {
+                     res.data.rows.map((e)=>{
+                        if(e.itemCode == null){
+                            e.itemCode = '합계';
+                            e.remark = '';
+                        };
+                    });
                     setRows(res.data.rows);
                 });
     };
