@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import NavBarContent from './Navbar.js';
+import NavBarContent from '../layout/Navbar.js';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
@@ -35,7 +35,7 @@ export default function Main(){
         { field: 'planEndDate',headerName: '생산계획종료', width: 120, editable: false,
              valueFormatter: params => moment(params.value).format("YYYY-MM-DD"), },
         { field: 'add', headerName: '생성', width: 100, editable: false },
-        { field: 'comment', headerName: '적요', width: 300, editable: false },
+        { field: 'comment', headerName: '적요', width: 300, editable: true },
         { field: 'history', headerName: '이력', width: 100, editable: false }, 
       ];
 

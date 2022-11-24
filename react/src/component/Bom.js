@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import NavBarContent from './Navbar.js';
+import NavBarContent from '../layout/Navbar.js';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';

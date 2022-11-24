@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { DataGrid} from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -9,6 +9,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import { CustomFooterTotalComponent } from "./customFooter.js";
 import { useRecoilState } from 'recoil';
 import { bomListModalState, bomModalState } from './state.js';
 import URL from '../config.js';
@@ -18,12 +19,23 @@ export default function BomListModal(){
     const [bomListModal, setbomListModal] = useRecoilState(bomListModalState);
     const bomModal = useRecoilState(bomModalState);
     const [rows, setRows] = useState([]);
-    
+    const [stockCnt, setStockCnt] = useState(0);
+    const [requireCnt, setRequireCnt] = useState(0);
+    const [remark, setRemark] = useState('');
+    const [requiretotal, setrequireTotal] = React.useState(0);
+    const [stocktotal, setstockTotal] = React.useState(0);
+
     const columns = [
-        { field: 'itemCode', headerName: '품목코드', width: 150, editable: false,},
-        { field: 'stockCnt', headerName: '재고수량', width: 120, editable: false,},
-        { field: 'requireCnt',headerName: '소요량', width: 120, editable: false,},
-        { field: 'remark', headerName: '비고', width: 100, editable: false },
+        { field: 'itemCode', headerName: '품목코드', width: 100, editable: false,},
+        { field: 'stockCnt', headerName: '재고수량', width: 100, editable: false,},
+        { field: 'requireCnt',headerName: '소요량', width: 100, editable: true,},
+        { field: 'remark', headerName: '비고', width: 170, editable: true },
+        { field: 'btn', headerName: '', width: 75, editable: false,
+            renderCell: (params) =>(
+                <Button size="small" variant='outlined'>수정</Button>
+            )
+        },
+
     ];
     
     useEffect(() => {
@@ -37,20 +49,34 @@ export default function BomListModal(){
     const loadData = async() => {
         await axios.get(URL+'/api/srchBom/')
                 .then((res) => {
-                     res.data.rows.map((e)=>{
-                        if(e.itemCode == null){
-                            e.itemCode = '합계';
-                            e.remark = '';
-                        };
-                    });
                     setRows(res.data.rows);
                 });
+    };
+
+    const handleUpdateValues = (e) =>{
+        console.log(54, e.field, e.value);
+
+        if(e == undefined){
+
+        }else{
+            if(e.field == 'requireCnt'){
+                setRequireCnt(e.value);
+            }else if(e.field == 'remark'){
+                setRemark(e.value);
+            };
+        };
+       
+    };
+
+    const handleUpdate = () => {
+        console.log(69, requireCnt, remark);
     };
 
     return(
         <Dialog 
             open={bomListModal}
             fullWidth
+            minWidth={1000}
         >
             <DialogTitle id="responsive-dialog-title" align='center' sx={{mt:2}}>
                 {"BOM 조회"}
@@ -103,21 +129,34 @@ export default function BomListModal(){
                     <DataGrid
                         rows={rows}
                         columns={columns}
-                        getRowId={(row) => row.itemCode}
+                        getRowId={(row) => row.bomId}
                         autoHeight={true}
-                        rowsPerPageOptions={[5, 10]}
-                        disableSelectionOnClick={true}
+                        disableSelectionOnClick
+                        components={{
+                            Footer: CustomFooterTotalComponent
+                        }}
+                        componentsProps={{
+                            footer: { requiretotal, stocktotal }
+                        }}
+                        onStateChange={() => {
+                            const requiretotal = rows
+                              .map((item) => item.requireCnt)
+                              .reduce((a, b) => a + b, 0);
+                            setrequireTotal(requiretotal);
+
+                            const stocktotal = rows
+                                .map((item) => item.stockCnt)
+                                .reduce((a, b) => a + b, 0);
+                            setstockTotal(stocktotal);
+
+                          }}
                     />
                 </Grid>
-                
             </DialogContent>
 
             <DialogActions>
                 <Button variant="outlined" autoFocus  sx={{mb:2}} onClick={() => setbomListModal(false)}>
                     닫기
-                </Button>
-                <Button variant="outlined" autoFocus sx={{mb:2}} >
-                    수정
                 </Button>
             </DialogActions>
         </Dialog>

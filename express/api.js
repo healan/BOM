@@ -65,7 +65,7 @@ export function delProduct(req, res){
 };
 
 export function srchBom(req, res){
-    let sql = 'select itemCode , itemName , sum(stockCnt) as stockCnt , sum(requireCnt) as requireCnt , remark from bom group by itemCode with rollup;';
+    let sql = 'select bomId, itemCode , itemName , stockCnt , requireCnt , remark from bom;';
     connection.query(sql,
         (err, rows) => {
             if(err)
