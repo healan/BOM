@@ -90,7 +90,7 @@ export default function NavBarContent() {
           noWrap
           sx={{ flexGrow: 1 }}
         >
-          기업 사무용품 판매 ERP 시스템
+          기업 세일즈 ERP 시스템
       </Typography>
     </Toolbar>
   </AppBar>
